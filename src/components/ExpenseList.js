@@ -7,10 +7,10 @@ const ExpenseList = (props) => (
   <div>
     <h1>Expense list</h1>
     {props.expenses.map((expense, index) => (
-      <ExpenseListItem key={expense.id} {...expense}      />
-    ))
+        <ExpenseListItem key={expense.id} {...expense}      />
+      ))
     }
-  </div>
+    </div>
 );
 
 const mapStateToProps = (state) => {

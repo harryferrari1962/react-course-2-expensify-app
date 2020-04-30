@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setTextFilter, sortByDate, sortByAmount,setStartDate, setEndDate } from '../actions/filters';
-import { DateRangePicker, SingleDatePicker } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
+import { setTextFilter, sortByDate, sortByAmount, setStartDate, setEndDate } from '../actions/filters';
 import 'react-dates/lib/css/_datepicker.css';
  
 class ExpenseListFilters extends React.Component {
@@ -15,9 +15,27 @@ class ExpenseListFilters extends React.Component {
   onFocusChange = (calendarFocused) => {
     this.setState(() => ({calendarFocused: calendarFocused}));
   };
+  onTextChange = (e) => {
+    this.props.setTextFilter(e.target.value);
+  };
+  onSortChange = (e) => {
+    if (e.target.value === 'date') {
+      this.props.sortByDate();
+    } else if (e.target.value === 'amount') {
+      this.props.sortByAmount();
+    }
+  };
   render() {
     return (
       <div>
+
+        <input 
+          type="text" 
+          value = {this.props.filters.text} 
+          onChange={(e) => {
+            this.props.dispatch(setTextFilter(e.target.value));
+        }}
+        />
         <DateRangePicker
         startDate={this.props.filters.startDate}
         endDate={this.props.filters.endDate}
@@ -27,14 +45,6 @@ class ExpenseListFilters extends React.Component {
         showClearDates={true}
         numberOfMonths={1}
         isOutsideRange={() => false}
-        />
-
-        <input 
-          type="text" 
-          value = {this.props.filters.text} 
-          onChange={(e) => {
-            this.props.dispatch(setTextFilter(e.target.value));
-        }}
         />
         <select 
           value = {this.props.filters.sortBy} 
@@ -52,9 +62,7 @@ class ExpenseListFilters extends React.Component {
   }
 };
 
-const mapStatetoProps = (state) => {
-  return {
-    filters: state.filters
-  };
-};
+const mapStatetoProps = (state) => ({
+  filters: state.filters
+});
 export default connect(mapStatetoProps)(ExpenseListFilters);
