@@ -47,7 +47,7 @@ id
 
 export const startRemoveExpense = ({id}) => {
   return (dispatch, getState) => {
-    return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
+    return database.ref(`users/${id}/expenses/${id}`).remove().then(() => {
       dispatch(removeExpense({id}));
     });
   };
